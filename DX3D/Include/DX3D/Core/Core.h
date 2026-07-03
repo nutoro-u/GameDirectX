@@ -1,4 +1,6 @@
 #pragma once
+#include <stdexcept>
+#include <memory>
 
 namespace DX3D
 {

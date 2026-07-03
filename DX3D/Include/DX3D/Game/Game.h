@@ -12,7 +12,7 @@ namespace DX3D
 		virtual void Run() final;
 
 	private:
-		Window* m_display{};
+		std::unique_ptr<Window> m_display{};
 		bool m_isRunning{ true };
 	};
 }

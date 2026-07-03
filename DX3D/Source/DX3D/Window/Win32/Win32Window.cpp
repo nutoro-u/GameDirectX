@@ -17,11 +17,16 @@ static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPA
 
 DX3D::Window::Window() : Base()
 {
-	WNDCLASSEX wc{};
-	wc.cbSize = sizeof(WNDCLASSEX);
-	wc.lpszClassName = L"DX3DWindow";
-	wc.lpfnWndProc = &WindowProcedure;
-	auto windowClassId = RegisterClassEx(&wc);
+	auto registerWindowClass = []()
+		{
+			WNDCLASSEX wc{};
+			wc.cbSize = sizeof(WNDCLASSEX);
+			wc.lpszClassName = L"DX3DWindow";
+			wc.lpfnWndProc = &WindowProcedure;
+			return RegisterClassEx(&wc);
+		};
+
+	static const auto windowClassId = std::invoke(registerWindowClass);
 
 	if (!windowClassId)
 	{
