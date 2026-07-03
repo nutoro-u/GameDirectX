@@ -2,15 +2,28 @@
 #include <Windows.h>
 #include <stdexcept>
 
+static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
+	{
+	case WM_CLOSE:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+	return 0;
+}
+
 DX3D::Window::Window() : Base()
 {
 	WNDCLASSEX wc{};
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.lpszClassName = L"DX3DWindow";
-	wc.lpfnWndProc = DefWindowProc;
+	wc.lpfnWndProc = &WindowProcedure;
 	auto windowClassId = RegisterClassEx(&wc);
 
-	if(!windowClassId)
+	if (!windowClassId)
 	{
 		throw std::runtime_error("Failed to register window class");
 	}
@@ -23,7 +36,7 @@ DX3D::Window::Window() : Base()
 		rc.right - rc.left, rc.bottom - rc.top,
 		NULL, NULL, NULL, NULL);
 
-	if(!m_handle)
+	if (!m_handle)
 	{
 		throw std::runtime_error("Failed to create window");
 	}
