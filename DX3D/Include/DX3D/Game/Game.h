@@ -12,6 +12,7 @@ namespace DX3D
 		virtual void Run() final;
 
 	private:
+		std::unique_ptr<GraphicsEngine> m_graphicsEngine{};
 		std::unique_ptr<Window> m_display{};
 		bool m_isRunning{ true };
 	};
